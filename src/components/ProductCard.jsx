@@ -1,35 +1,49 @@
 import React from 'react';
 
 export const ProductCard = ({ producto, onAddToCart }) => {
+  const getBadgeColor = (estado) => {
+    switch (estado) {
+      case 'Matriculado': return 'bg-info text-dark';
+      case 'En curso': return 'bg-primary';
+      case 'Aprobado': return 'bg-success';
+      case 'Certificado': return 'bg-warning text-dark';
+      case 'Reprobado': return 'bg-danger';
+      default: return 'bg-secondary';
+    }
+  };
+
   return (
-    <div className="card h-100 border-0 shadow-sm text-center overflow-hidden">
-      <div style={{ height: '220px', overflow: 'hidden', backgroundColor: '#f8f9fa' }}>
-        <img 
-          src={producto.imagen} 
-          alt={producto.nombre} 
-          className="w-100 h-100" 
-          style={{ objectFit: 'cover' }}
-        />
-      </div>
-      
-      <div className="card-body d-flex flex-column align-items-center">
-        <h5 className="card-title fw-bold text-dark mb-1 fs-6">{producto.nombre}</h5>
-        <p className="text-muted small mb-1">{producto.categoria}</p>
+    <div className="card h-100 shadow-sm border-0">
+      <img 
+        src={producto.imagen} 
+        className="card-img-top" 
+        alt={producto.nombre} 
+        style={{ height: '180px', objectFit: 'cover' }}
+      />
+      <div className="card-body d-flex flex-column">
+        <div className="d-flex justify-content-between align-items-start mb-2">
+          <span className="badge bg-secondary">{producto.area}</span>
+          <span className={`badge ${getBadgeColor(producto.estado)}`}>
+            {producto.estado}
+          </span>
+        </div>
+
+        <h5 className="card-title fw-bold text-dark">{producto.nombre}</h5>
+        <p className="text-muted small mb-1"><strong>Código:</strong> {producto.codigo}</p>
+        <p className="text-muted small mb-1"><strong>Profesor:</strong> {producto.profesor}</p>
+        <p className="text-muted small mb-2"><strong>Duración:</strong> {producto.duracion} horas | <strong>Capacidad:</strong> {producto.capacidadMax} alumnos</p>
         
-        <p className="fs-5 fw-bold text-success mb-1">
-          $ {producto.precio.toLocaleString()}
-        </p>
-
-        <p className="small text-secondary mb-2">
-          Stock Disponible: <span className={producto.stock <= 3 ? 'text-danger fw-bold' : ''}>{producto.stock}</span>
-        </p>
-
-        <button 
-          className="btn btn-dark w-100 mt-auto fw-bold" 
-          onClick={() => onAddToCart(producto)}
-        >
-          Añadir
-        </button>
+        <div className="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+          <span className="fs-5 fw-bold text-success">
+            ${producto.precio?.toLocaleString('es-CL')} CLP
+          </span>
+          <button 
+            className="btn btn-primary btn-sm"
+            onClick={() => onAddToCart(producto)}
+          >
+            Matricular
+          </button>
+        </div>
       </div>
     </div>
   );

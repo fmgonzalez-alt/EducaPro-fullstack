@@ -3,76 +3,54 @@ import { getProductos } from '../data/db';
 import { ProductCard } from '../components/ProductCard';
 
 export const HomePage = ({ onAddToCart }) => {
-  const [productos, setProductos] = useState([]);
+  const [cursos, setCursos] = useState([]);
 
   useEffect(() => {
-    setProductos(getProductos());
+    setCursos(getProductos());
   }, []);
 
-  const categorias = [
-    {
-      nombre: 'Librería y Cuadernos',
-      imagen: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop'
-    },
-    {
-      nombre: 'Mochilas y Estuches',
-      imagen: 'https://media.adeo.com/mkp/ee850f0c6a6a3f91ed2c6e1ac1687eb5/media.jpg?width=3000&height=3000&format=jpg&quality=80&fit=bounds'
-    },
-    {
-      nombre: 'Tecnología Estudiantil',
-      imagen: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'
-    }
+  const areas = [
+    { nombre: 'Tecnología', imagen: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400&auto=format&fit=crop' },
+    { nombre: 'Diseño', imagen: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=400&auto=format&fit=crop' },
+    { nombre: 'Marketing', imagen: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop' },
+    { nombre: 'Oficios Técnicos', imagen: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=400&auto=format&fit=crop' }
   ];
 
   return (
     <div className="container my-4">
-      {/* Banner Principal */}
       <div 
-        className="rounded text-white d-flex flex-column align-items-center justify-content-center mb-5 text-center shadow-sm position-relative overflow-hidden"
+        className="rounded text-white p-5 mb-5 text-center shadow position-relative overflow-hidden"
         style={{ 
-          width: '100%', 
-          height: '300px',
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1200&auto=format&fit=crop")',
+          backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1200&auto=format&fit=crop")',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        <h1 className="fw-bold display-5">Nuevos Útiles y Accesorios</h1>
-        <p className="lead text-white-50">Descubre los mejores artículos de estudio con descuentos exclusivos.</p>
-        <div className="d-flex gap-2 mt-2">
-          <span className="badge bg-light rounded-circle" style={{ width: '10px', height: '10px' }}></span>
-          <span className="badge bg-white rounded-circle" style={{ width: '10px', height: '10px' }}></span>
-          <span className="badge bg-light rounded-circle" style={{ width: '10px', height: '10px' }}></span>
-        </div>
+        <h1 className="fw-bold display-4">EducaPro - Instituto de Formación</h1>
+        <p className="lead mx-auto" style={{ maxWidth: '700px' }}>
+          Formación técnica y profesional en Santiago, Valparaíso y Concepción. Optimiza tu progreso académico e inscríbete en nuestros programas.
+        </p>
       </div>
 
-      {/* Categorías */}
-      <h2 className="text-center fw-bold mb-4">Categorías</h2>
-      <div className="row g-4 mb-5">
-        {categorias.map((cat, idx) => (
-          <div key={idx} className="col-12 col-md-4">
-            <div 
-              className="rounded shadow-sm overflow-hidden border-0"
-              style={{ width: '100%', height: '200px' }}
-            >
-              <img 
-                src={cat.imagen} 
-                alt={cat.nombre} 
-                className="w-100 h-100" 
-                style={{ objectFit: 'cover' }}
-              />
+      <h3 className="fw-bold mb-3 text-secondary">Áreas de Especialización</h3>
+      <div className="row g-3 mb-5">
+        {areas.map((area, idx) => (
+          <div key={idx} className="col-6 col-md-3">
+            <div className="card border-0 shadow-sm text-white overflow-hidden" style={{ height: '120px' }}>
+              <img src={area.imagen} className="card-img w-100 h-100" style={{ objectFit: 'cover', filter: 'brightness(0.6)' }} alt={area.nombre} />
+              <div className="card-img-overlay d-flex align-items-center justify-content-center">
+                <h5 className="fw-bold text-center m-0">{area.nombre}</h5>
+              </div>
             </div>
-            <h5 className="text-center mt-2 fw-semibold text-dark">{cat.nombre}</h5>
           </div>
         ))}
       </div>
 
-      {/* Lista de Productos */}
-      <h2 className="text-center fw-bold mb-4">Lista de Productos</h2>
+      <h3 className="fw-bold mb-4 text-secondary">Catálogo de Cursos Disponibles</h3>
       <div className="row g-4">
-        {productos.map((prod) => (
-          <div key={prod.id} className="col-12 col-md-6 col-lg-3">
-            <ProductCard producto={prod} onAddToCart={onAddToCart} />
+        {cursos.map((curso) => (
+          <div key={curso.id} className="col-12 col-md-6 col-lg-4">
+            <ProductCard producto={curso} onAddToCart={onAddToCart} />
           </div>
         ))}
       </div>
