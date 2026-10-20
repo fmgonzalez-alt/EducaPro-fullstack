@@ -1,36 +1,48 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { HomePage } from './pages/HomePage';
+import { AdminDashboard } from './pages/AdminDashboard';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { PagoExitoso } from './pages/PagoExitoso';
-import { AdminDashboard } from './pages/AdminDashboard';
 
-export default function App() {
-  const [carrito, setCarrito] = useState([]);
+export const App = () => {
+  const [cart, setCart] = useState([]);
 
-  const handleAddToCart = (producto) => {
-    const existe = carrito.find(item => item.id === producto.id);
-    if (existe) {
-      setCarrito(carrito.map(item => item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item));
-    } else {
-      setCarrito([...carrito, { ...producto, cantidad: 1 }]);
+  const handleAddToCart = (curso) => {
+    if (!cart.some(item => item.id === curso.id)) {
+      setCart([...cart, curso]);
     }
   };
 
-  const handleClearCart = () => setCarrito([]);
+  const handleRemoveFromCart = (id) => {
+    setCart(cart.filter(item => item.id !== id));
+  };
 
-  const cartTotal = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+  const handleClearCart = () => {
+    setCart([]);
+  };
 
   return (
-    <div className="bg-light min-vh-100">
-      <Navbar cartTotal={cartTotal} />
+    <Router>
+      <Navbar cartCount={cart.length} />
       <Routes>
         <Route path="/" element={<HomePage onAddToCart={handleAddToCart} />} />
-        <Route path="/carrito" element={<CheckoutPage carrito={carrito} onClearCart={handleClearCart} />} />
-        <Route path="/pago-exitoso" element={<PagoExitoso />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route 
+          path="/checkout" 
+          element={
+            <CheckoutPage 
+              cart={cart} 
+              onRemove={handleRemoveFromCart} 
+              onClear={handleClearCart} 
+            />
+          } 
+        />
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
       </Routes>
-    </div>
+    </Router>
   );
-}
+};
+
+export default App;
